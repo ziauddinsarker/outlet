@@ -65,7 +65,7 @@ class Upload_image extends CI_Controller
 
 
 */
-
+/*
     public function __construct()
     {
         parent::__construct();
@@ -88,7 +88,7 @@ class Upload_image extends CI_Controller
     /**
      * Show All PP Nonwovens Costing in a page of a Particular user
      */
-
+/*
     public function index()
     {
         $this->load->view('admin/admin_header_view', $this->data);
@@ -97,7 +97,9 @@ class Upload_image extends CI_Controller
     }
 
     /******************Works Fine*******************/
-    public function save_image()
+
+/*
+     public function save_image()
     {
         $url = $this->do_upload();
         $title = $_POST["title"];
@@ -127,6 +129,7 @@ class Upload_image extends CI_Controller
     /**
      * @return array
      */
+    /*
     private function setup_upload_option()
     {
         $config = array();
@@ -140,6 +143,7 @@ class Upload_image extends CI_Controller
     /**
      *
      */
+    /*
     public function doing_upload()
     {
         $files = $_FILES;
@@ -171,4 +175,6 @@ class Upload_image extends CI_Controller
             }
         }
     }
+
+    */
 }

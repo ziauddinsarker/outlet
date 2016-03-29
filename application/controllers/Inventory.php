@@ -712,6 +712,74 @@ class Inventory extends CI_Controller {
 	 * Save New product to inventory
 	 */
 	function save_products_to_inventory(){
+		$challan_data = array(
+			'challan_number'=> $this->input->post('chalan-no'),
+			'challan_from'=> $this->input->post('received-from'),
+			'challan_date'=> date("Y-m-d"),
+			'challan_time'=> date("h:i:sa")
+		);
+		//echo "-----------Challan Data ----------";
+		//var_dump($challan_data);
+		//echo "-----------Challan Data ----------";
+
+		$this->db->insert('tbl_challan', $challan_data);
+		$challan_id = $this->db->insert_id();
+
+		for($i = 0; $i < count($this->input->post('productcodeid-inventory')); $i++){
+
+			$product_id = $this->input->post('productcodeid-inventory')[$i];
+			$product_quantity = $this->input->post('quantity-inventory')[$i];
+
+			//echo "-----------Product Data ----------";
+			//echo "-----------Product ID ----------";
+			//var_dump($product_id);
+			//echo "-----------Product Quantity ----------";
+			//var_dump($product_quantity);
+
+			$this->db->select('product_id');
+			$this->db->from('tbl_inventory');
+			$this->db->where('product_id', $product_id);
+			$num_rows = $this->db->count_all_results();
+
+			//If row number is zero then save data to new row
+			if($num_rows == NULL || $num_rows == '' ||$num_rows == 0  ) {
+				$product_data = array(
+					'product_id' => $product_id,
+					'product_left' => $product_quantity,
+					'challan_no' => $challan_id,
+				);
+				//echo "-----------Product Data----------";
+				//var_dump($product_data);
+				//echo "-----------Product Data----------";
+
+				$this->db->insert('tbl_inventory', $product_data);
+			}
+
+			if($num_rows == 1){
+				//Get Existing Left Products
+				$product_left = $this->db->select('product_id,product_left')->get_where('tbl_inventory', array('product_id' => $product_id))->row()->product_left;
+
+				//echo "-----------Product Left Before Added----------";
+				//var_dump($product_left);
+
+				$product_left = $product_left + $product_quantity;
+
+				//echo "-----------Product Left After Added----------";
+				//var_dump($product_left);
+
+				$update_data = array(
+					'product_left' => $product_left,
+				);
+				$this->db->where('product_id', $product_id);
+				$this->db->update('tbl_inventory', $update_data);
+			}
+			}
+		redirect('inventory/index', 'refresh');
+
+	}
+
+	/*
+	function save_products_to_inventory(){
 		$this->form_validation->set_rules('product', 'Product Name', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('quantity', 'Product Quantity', 'trim|required|xss_clean|numeric');
 		// hold error messages in div
@@ -782,7 +850,7 @@ class Inventory extends CI_Controller {
 
 		}
 	}
-
+*/
 	/*
 	public function c_get_all(){
 		$data = $this->inventory_model->all_products();
@@ -1211,6 +1279,10 @@ class Inventory extends CI_Controller {
 			$final_product_left = $product_left - $product_quantity;
 			$final_product_sold = $product_sold + $product_quantity;
 
+			//var_dump($final_product_left);
+			//var_dump($final_product_sold);
+
+
 			$inventory_detail = array(
 				'product_left' => $final_product_left,
 				'product_sold' => $final_product_sold
@@ -1244,8 +1316,10 @@ class Inventory extends CI_Controller {
 
 				$this->db->insert('tbl_order', $order_data);
 			}
+		redirect('inventory/invoice', 'refresh');
 
 
+	/*
 		//PDF output
 		$this->fpdf->SetTitle("ICS - PDF Output");
 		//Set Font for Header
@@ -1298,7 +1372,7 @@ class Inventory extends CI_Controller {
 		 * Content
 		 *
 		 */
-
+/*
 		$this->fpdf->cell(10,6,'#',1,0,'C',1);
 		$this->fpdf->cell(85,6,'Product ID',1,0,'C',1);
 		$this->fpdf->cell(25,6,'Quantity',1,0,'C',1);
@@ -1311,7 +1385,7 @@ class Inventory extends CI_Controller {
 		/**
 		 * SQL
 		 */
-
+/*
 		$this->db->select('*');
 		$this->db->from('tbl_customer');
 		$this->db->join('tbl_order','tbl_order.customer_id = tbl_customer.id');
@@ -1405,6 +1479,8 @@ class Inventory extends CI_Controller {
 			//$this->fpdf->SetFont('Times','',12);
 
 		//Open PDF on same page
+		/*
+
 		$this->fpdf->Output("Invoice.pdf", "I");
 
 		//$this->fpdf->Output("Invoice.pdf",'F');
@@ -1417,6 +1493,7 @@ class Inventory extends CI_Controller {
 		//echo $this->fpdf->Output('ics.pdf','D');
 
 		//redirect('inventory/invoice', 'refresh');
+		*/
 	}
 	
 	function print_later_from_invoice_data()

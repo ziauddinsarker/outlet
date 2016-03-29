@@ -35,6 +35,74 @@
 
 
       <script src="<?php echo base_url('assets/js/main.js'); ?>"></script>
+
+
+
+      <script>
+
+          var j=$('.detail-inventory tr').length+1;
+
+          $(".addmore-inventory").on('click',function(){
+              count=$('.detail-inventory tr').length + 1;
+              var data="<tr><td><span id='snum"+j+"'>"+count+".</span></td>";
+              data+="<td colspan='4'><input type='text' class='form-control productcode-inventory autocomplete_inventory_product' data-type='productcode-inventory' id='productcode-inventory_"+j+"' name='productcode-inventory[]' required='required'></td>";
+              data+="<input type='hidden' class='form-control' data-type='productcodeid-inventory' id='productcodeid-inventory_"+j+"' name='productcodeid-inventory[]' required='required'>";
+              data+="<td><input type='text' class='form-control quantity-inventory' data-type='quantityinventory' id='quantity-inventory_"+j+"' name='quantity-inventory[]' required='required'></td>";
+              data+="<td><a href='#' class='btn btn-primary remove'><i class='fa fa-times'></i></a></td></tr>";
+              $('table').append(data);
+              row = j ;
+              j++;
+
+          });
+
+
+          var multipleInventory = ["1|WPLB-00001-15|1050|",
+              "2|WPLB-00002-15|1400|",
+              "3|SLLB-00020-15|2250|",
+              "4|WPLB-00023-15|600|",
+              "5|WPLB-00025-15|1050|",
+          ];
+
+          //autocomplete script
+          $(document).on('focus','.autocomplete_inventory_product',function(){
+              type = $(this).data('type');
+
+              if(type =='productcodeid-inventory' )autoTypeNo=0;
+              if(type =='productcode-inventory' )autoTypeNo=1;
+
+              $(this).autocomplete({
+                  minLength: 0,
+                  source: function( request, response ) {
+                      var array = $.map(multipleInventory, function (item) {
+                          var code = item.split("|");
+                          return {
+                              label: code[autoTypeNo],
+                              value: code[autoTypeNo],
+                              data : item
+                          }
+                      });
+                      //call the filter here
+                      response($.ui.autocomplete.filter(array, request.term));
+                  },
+                  focus: function() {
+                      // prevent value inserted on focus
+                      return false;
+                  },
+                  select: function( event, ui ) {
+                      var names = ui.item.data.split("|");
+                      id_arr = $(this).attr('id');
+                      id = id_arr.split("_");
+                      elementId = id[id.length-1];
+                      $('#productcodeid-inventory_'+elementId).val(names[0]);
+                      $('#productcode-inventory_'+elementId).val(names[1]);
+                  }
+              });
+
+          });
+
+
+      </script>
+
 	  <script>
           /**
            * Site : http:www.smarttutorials.net
@@ -64,7 +132,6 @@
               row = i ;
               i++;
           });
-
 
 
           function select_all() {

@@ -96,21 +96,10 @@
 					<td><input type="text" class="form-control amount" data-type="amount" id='amount_1' name="amount[]" readonly="readonly"></td>
 					<td><a href="#" class="btn btn-primary remove"><i class="fa fa-times"></i></a></td>
 				</tr>
-
-			<!--
-			<tr>
-				<td class="no">1</td>
-				<td colspan="4"><input type="text" class="form-control productcode" name="productcode[]" required="required"></td>
-				<td><input type="text" class="form-control quantity" name="quantity[]" required="required"></td>
-				<td><input type="text" class="form-control price" value="" id="price" name="price[]" required="required"></td>
-				<td><input type="text" class="form-control discount-amount" name="discountamount[]"></td>
-				<td><input type="text" class="form-control discount" name="discount[]"></td>
-				<td><input type="text" class="form-control amount" name="amount[]" readonly="readonly"></td>
-				<td><a href="#" class="btn btn-primary remove"><i class="fa fa-times"></i></a></td>
-			</tr>
-			-->
-
 			</tbody>
+
+
+
 			<tfoot>
 				<th class="no-style" colspan="8"></th>
 				<th >Total</th>
