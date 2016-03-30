@@ -1251,8 +1251,57 @@ class Inventory extends CI_Controller {
 			$this->load->view('admin/admin_footer_view', $this->data);
 		}
 	}
-	
-	
+
+	/**
+	 * Show Product From Inventory in Invoice
+	 * If there are no product in inventory then product will now show in invoice
+	 */
+
+	public function show_product_from_inventory_in_invoice(){
+		// process posted form data
+		$keyword = $this->input->post('term');
+		$query = $this->inventory_model->get_product_from_inventory($keyword); //Search DB
+		if( ! empty($query) )
+		{
+			foreach( $query as $row )
+			{
+				$data[] = array(
+					'value' => $row->product_code,
+					'id'=>$row->id,
+					'price'=>$row->product_price
+				);  //Add a row to array
+			}
+		}
+			echo json_encode($data); //echo json string if ajax request
+
+	}
+
+	/**
+	 * Get Products From All Products in Inventory when add product in the Inventory
+	 * All Product will show there
+	 */
+
+	public function show_product_from_products_in_inventory(){
+		// process posted form data
+		$keyword = $this->input->post('term');
+		$query = $this->inventory_model->get_product_from_all_products($keyword); //Search DB
+		if( ! empty($query) )
+		{
+			foreach( $query as $row )
+			{
+				$data[] = array(
+					'value' => $row->product_code,
+					'id'=>$row->id
+				);
+			}
+		}
+			echo json_encode($data); //echo json string if ajax request
+
+	}
+
+
+
+
 
 	function save_invoice(){
 		$customer_data = array(
@@ -1276,6 +1325,7 @@ class Inventory extends CI_Controller {
 				$product_left = $inventory->product_left;
 				$product_sold = $inventory->product_sold;
 			}
+
 			$final_product_left = $product_left - $product_quantity;
 			$final_product_sold = $product_sold + $product_quantity;
 

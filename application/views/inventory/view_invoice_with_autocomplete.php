@@ -72,8 +72,17 @@
 			</div>
 		</div>
 	<div class="col-md-9">
+		Country :
+		<?php
+		//echo form_input('printable_name','','id="code"');
+		//echo form_input('printable_id','','id="id"');
+		?>
+		<ul>
+			<div id="result"></div>
+		</ul>
 
-		   <table class="table table-bordered table-hover invtable">
+
+		<table class="table table-bordered table-hover invtable">
 			<thead>
 				<th>No</th>
 				<th colspan="4">Product ID</th>
@@ -89,7 +98,7 @@
 					<td class="no">1</td>
 					<td colspan="4"><input type="text" class="form-control productcode autocomplete_txt" data-type="productcode" id='productcode_1' name="productcode[]" required="required"></td>
 					<input type="hidden" class="form-control" data-type="productcodeid" id='productcodeid_1' name="productcodeid[]" required="required">
-					<td><input type="text" class="form-control quantity" data-type="quantity" id='quantity_1' name="quantity[]" required="required"></td>
+					<td><input type="text" class="form-control quantity" data-type="quantity" id='quantity_1' name="quantity[]" required="required" autocomplete="off"></td>
 					<td><input type="text" class="form-control price autocomplete_txt" data-type="price" id='price_1' name="price[]" required="required"></td>
 					<td><input type="text" class="form-control discount-amount" data-type="discountamount" id='discountamount_1' name="discountamount[]"></td>
 					<td><input type="text" class="form-control discount" data-type="discount" id='discount_1' name="discount[]"></td>

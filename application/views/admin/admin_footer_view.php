@@ -37,6 +37,96 @@
       <script src="<?php echo base_url('assets/js/main.js'); ?>"></script>
 
 
+      <script type="text/javascript">
+          /**
+           * Get Product code and price from inventory and show in the invoice. If there is no product in the inventory then can't make any invoice.
+           * Autocomplete field when trying to write product code.
+           */
+          $(document).on('focus','.autocomplete_txt',function(){
+              type = $(this).data('type');
+
+              if(type =='productcodeid' )autoTypeNo=0;
+              if(type =='productcode' )autoTypeNo=1;
+              if(type =='price' )autoTypeNo=2;
+
+              $(".autocomplete_txt").autocomplete({
+                  source: "<?php echo base_url(); ?>index.php/inventory/show_product_from_inventory_in_invoice",
+              minLength: 0,
+                  dataType: 'json',
+                  change: function(event, ui) {
+                      id_arr = $(this).attr('id');
+                      id = id_arr.split("_");
+                      elementId = id[id.length-1];
+
+                      $('#productcodeid_'+elementId).val(ui.item ? ui.item.id : "");
+                  if (ui.item) {
+                      $('#productcode_'+elementId).val(ui.item.value);
+                      $('#price_'+elementId).val(ui.item.price);
+                  }
+              },
+
+              select: function(event, ui) {
+                  id_arr = $(this).attr('id');
+                  id = id_arr.split("_");
+                  elementId = id[id.length-1];
+                  $('#productcodeid_'+elementId).val(ui.item ? ui.item.id : "");
+                  $('#productcode_'+elementId).val(ui.item.value);
+                  $('#price_'+elementId).val(ui.item.price);
+              }
+          });
+          });
+
+
+      </script>
+
+      <script type="text/javascript">
+          /**
+           * Get Product code from all products and show in the invoice. If there is no product in the inventory then can't make any invoice.
+           * Autocomplete field when trying to write product code.
+           */
+          $(document).on('focus','.autocomplete_inventory_product',function(){
+              type = $(this).data('type');
+
+              if(type =='productcodeid-inventory' )autoTypeNo=0;
+              if(type =='productcode-inventory' )autoTypeNo=1;
+
+              $(".autocomplete_inventory_product").autocomplete({
+                  source: "<?php echo base_url(); ?>index.php/inventory/show_product_from_products_in_inventory",
+                  source: function( request, response ) {
+                      var array = $.map(multiple, function (item) {
+                          var code = item.split("|");
+                          return {
+                              label: code[autoTypeNo],
+                              value: code[autoTypeNo],
+                              data : item
+                          }
+
+                  minLength: 2,
+                  dataType: 'json',
+                  change: function(event, ui) {
+                      id_arr = $(this).attr('id');
+                      id = id_arr.split("_");
+                      elementId = id[id.length-1];
+
+                      $('#productcodeid-inventory_'+elementId).val(ui.item ? ui.item.id : "");
+                  if (ui.item) {
+                      $('#productcode-inventory_'+elementId).val(ui.item.value);
+                  }
+              },
+
+              select: function(event, ui) {
+                  id_arr = $(this).attr('id');
+                  id = id_arr.split("_");
+                  elementId = id[id.length-1];
+                  $('#productcodeid-inventory_'+elementId).val(ui.item ? ui.item.id : "");
+                  $('#productcode-inventory_'+elementId).val(ui.item.value);
+              }
+          });
+          });
+
+
+      </script>
+
 
       <script>
 
@@ -54,13 +144,13 @@
               j++;
 
           });
+/*
 
-
-          var multipleInventory = ["1|WPLB-00001-15|1050|",
-              "2|WPLB-00002-15|1400|",
-              "3|SLLB-00020-15|2250|",
-              "4|WPLB-00023-15|600|",
-              "5|WPLB-00025-15|1050|",
+          var multipleInventory = ["1|WPLB-00001-15|",
+              "2|WPLB-00002-15|",
+              "3|SLLB-00020-15|",
+              "4|WPLB-00023-15|",
+              "5|WPLB-00025-15|",
           ];
 
           //autocomplete script
@@ -100,7 +190,7 @@
 
           });
 
-
+*/
       </script>
 
 	  <script>
@@ -151,6 +241,8 @@
                   $('#'+id).html(key+1);
               });
           }
+
+         /*
           var multiple = ["1|WPLB-00001-15|1050|",
               "2|WPLB-00002-15|1400|",
               "3|SLLB-00020-15|2250|",
@@ -231,8 +323,11 @@
                       return matcher.test(value.label || value.value || value);
                   });
               };
+
               */
+          /*
           });
+          */
       </script>
 	  
 	  

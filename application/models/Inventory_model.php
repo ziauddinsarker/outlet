@@ -696,7 +696,32 @@ class Inventory_model extends CI_Model
 
         }
 
-        /**
+    /**
+     * @param $keyword
+     * @return mixed
+     */
+    function get_product_from_inventory($keyword){
+        $this->db->select('tbl_inventory.id,tbl_product.product_code,tbl_product.product_price');
+        $this->db->from('tbl_inventory');
+        $this->db->join('tbl_product','tbl_inventory.product_id = tbl_product.id');
+        $this->db->like('product_code',$keyword,'after');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    /**
+     *
+     */
+    function get_product_from_all_products($keyword){
+        $this->db->select('tbl_product.id,tbl_product.product_code');
+        $this->db->from('tbl_product');
+        $this->db->like('product_code',$keyword,'after');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+
+    /**
          * @return array|bool
          */
 
